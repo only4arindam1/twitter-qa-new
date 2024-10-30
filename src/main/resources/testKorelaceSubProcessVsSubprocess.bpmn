@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="testKorelaceSubProcessVSubprocess" name="CorrelationSubprocess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="javascript">execution.setVariable("pid",execution.getProcessInstanceId());
+java.lang.System.out.println("PID&gt;&gt;&gt;&gt;&gt;&gt; " + execution.getProcessInstanceId());</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_10dy2tx</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_10dy2tx" sourceRef="StartEvent_1" targetRef="Task_1efo70u" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_01gwm5n" name="main send" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:exclusive="false">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Main send (start)");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Main send (end)");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1ml4csh</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1x3mz74</bpmn:outgoing>
+      <bpmn:messageEventDefinition camunda:expression="${ execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;travleTime&#34;).processInstanceBusinessKey(&#34;test12&#34;).correlateAllWithResult() }" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:subProcess id="SubProcess_13bkzl2" name="Sub1" triggeredByEvent="true">
+      <bpmn:startEvent id="StartEvent_12k9ien" name="sub1 receive" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:exclusive="false" isInterrupting="false">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="start">
+            <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Sub1 receive");</camunda:script>
+          </camunda:executionListener>
+        </bpmn:extensionElements>
+        <bpmn:outgoing>SequenceFlow_10kds7g</bpmn:outgoing>
+        <bpmn:messageEventDefinition messageRef="Message_1pqqb00" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="EndEvent_0v9yqsh" name="sub1 send">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="start">
+            <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Sub1 send");</camunda:script>
+          </camunda:executionListener>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_10kds7g</bpmn:incoming>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_0uagru6" camunda:expression="${ execution.getProcessEngineServices() .getRuntimeService() .createMessageCorrelation(&#34;Message_0o4vsvo_dole2&#34;) .processInstanceId(execution.getProcessInstanceId()) .correlate() }" />
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_10kds7g" sourceRef="StartEvent_12k9ien" targetRef="EndEvent_0v9yqsh" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="SequenceFlow_1x3mz74" sourceRef="IntermediateThrowEvent_01gwm5n" targetRef="IntermediateThrowEvent_1inrh73" />
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_1inrh73" name="main receive">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Main receive");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1x3mz74</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1qtw2zr</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1r7gpoq" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_022b4an">
+      <bpmn:incoming>SequenceFlow_1qtw2zr</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1qtw2zr" sourceRef="IntermediateThrowEvent_1inrh73" targetRef="EndEvent_022b4an" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ml4csh" sourceRef="Task_1efo70u" targetRef="IntermediateThrowEvent_01gwm5n" />
+    <bpmn:userTask id="Task_1efo70u" name="Before send (main)" camunda:assignee="demo">
+      <bpmn:incoming>SequenceFlow_10dy2tx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ml4csh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:subProcess id="SubProcess_0ltcqf8" name="Sub2" triggeredByEvent="true">
+      <bpmn:userTask id="UserTask_0yl1onm" name="before end (interrupting)" camunda:assignee="demo">
+        <bpmn:incoming>SequenceFlow_1vtz3p0</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_15u3gtk</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="SequenceFlow_1vtz3p0" sourceRef="StartEvent_0lvcv48" targetRef="UserTask_0yl1onm" />
+      <bpmn:sequenceFlow id="SequenceFlow_15u3gtk" sourceRef="UserTask_0yl1onm" targetRef="EndEvent_0mdxch7" />
+      <bpmn:endEvent id="EndEvent_0mdxch7" name="getPid">
+        <bpmn:extensionElements>
+          <camunda:executionListener expression="java.lang.System.out.println(&#34;PID&#62;&#62;&#62;&#62;&#62;&#62; &#34; + execution.getProcessInstanceId());" event="start" />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_15u3gtk</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="StartEvent_0lvcv48" name="sub2 receive">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="start">
+            <camunda:script scriptFormat="javascript">java.lang.System.out.println("&gt;&gt;&gt; Sub2 receive (kill)");</camunda:script>
+          </camunda:executionListener>
+        </bpmn:extensionElements>
+        <bpmn:outgoing>SequenceFlow_1vtz3p0</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_0jsv7ey" messageRef="Message_0hdgutt" />
+      </bpmn:startEvent>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="Activity_1u21i56" name="travelSub" triggeredByEvent="true">
+      <bpmn:sequenceFlow id="Flow_16pssnc" sourceRef="Event_1qe4r5o" targetRef="Activity_1mrg5tl" />
+      <bpmn:userTask id="Activity_1mrg5tl" name="Keywest Travel Booking" camunda:assignee="demo">
+        <bpmn:incoming>Flow_16pssnc</bpmn:incoming>
+        <bpmn:outgoing>Flow_1mbaas9</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="Flow_1mbaas9" sourceRef="Activity_1mrg5tl" targetRef="Event_0vhdmzq" />
+      <bpmn:endEvent id="Event_0vhdmzq">
+        <bpmn:incoming>Flow_1mbaas9</bpmn:incoming>
+        <bpmn:terminateEventDefinition id="TerminateEventDefinition_0hwyzo3" />
+      </bpmn:endEvent>
+      <bpmn:startEvent id="Event_1qe4r5o" name="travelTime" camunda:asyncBefore="true" camunda:asyncAfter="true">
+        <bpmn:outgoing>Flow_16pssnc</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_1dp1bql" messageRef="Message_0wgfjdn" />
+      </bpmn:startEvent>
+    </bpmn:subProcess>
+    <bpmn:textAnnotation id="TextAnnotation_1m29jy4">
+      <bpmn:text>It has to be async or there will be an error: "activity is null"</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0i43ui7">
+      <bpmn:text>If this is async, it will let the other tokens move before itself</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1iq03q9" sourceRef="StartEvent_12k9ien" targetRef="TextAnnotation_1m29jy4" />
+    <bpmn:association id="Association_0ahuh6g" sourceRef="StartEvent_12k9ien" targetRef="TextAnnotation_0i43ui7" />
+  </bpmn:process>
+  <bpmn:message id="Message_1pqqb00" name="Message_17kb17f_dole" />
+  <bpmn:message id="Message_1r7gpoq" name="Message_1qii8cn_nahore" />
+  <bpmn:message id="Message_0hdgutt" name="Message_0o4vsvo_dole2" />
+  <bpmn:message id="Message_0wgfjdn" name="travleTime" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="testKorelaceSubProcessVSubprocess">
+      <bpmndi:BPMNShape id="TextAnnotation_1m29jy4_di" bpmnElement="TextAnnotation_1m29jy4" bioc:stroke="#E53935" bioc:fill="#FFCDD2">
+        <dc:Bounds x="168" y="566" width="234" height="41" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0i43ui7_di" bpmnElement="TextAnnotation_0i43ui7">
+        <dc:Bounds x="187" y="244" width="195" height="42" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ml4csh_di" bpmnElement="SequenceFlow_1ml4csh">
+        <di:waypoint x="358" y="120" />
+        <di:waypoint x="424" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1qtw2zr_di" bpmnElement="SequenceFlow_1qtw2zr">
+        <di:waypoint x="652" y="120" />
+        <di:waypoint x="830" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="530.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1x3mz74_di" bpmnElement="SequenceFlow_1x3mz74">
+        <di:waypoint x="460" y="120" />
+        <di:waypoint x="616" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="433" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_10dy2tx_di" bpmnElement="SequenceFlow_10dy2tx">
+        <di:waypoint x="196" y="120" />
+        <di:waypoint x="258" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="235.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="160" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_1d5uwq6_di" bpmnElement="IntermediateThrowEvent_01gwm5n">
+        <dc:Bounds x="424" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="417" y="145" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_0yh9g58_di" bpmnElement="IntermediateThrowEvent_1inrh73">
+        <dc:Bounds x="616" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="603" y="145" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_022b4an_di" bpmnElement="EndEvent_022b4an">
+        <dc:Bounds x="830" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="577" y="142" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1nruaqh_di" bpmnElement="Task_1efo70u">
+        <dc:Bounds x="258" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_1tp5fao_di" bpmnElement="SubProcess_13bkzl2" isExpanded="true">
+        <dc:Bounds x="163" y="336" width="373" height="197" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10kds7g_di" bpmnElement="SequenceFlow_10kds7g">
+        <di:waypoint x="219" y="458" />
+        <di:waypoint x="440" y="458" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1p6rrem_di" bpmnElement="StartEvent_12k9ien" bioc:stroke="#E53935" bioc:fill="#FFCDD2">
+        <dc:Bounds x="183" y="440" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="483" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0v9yqsh_di" bpmnElement="EndEvent_0v9yqsh">
+        <dc:Bounds x="440" y="440" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="434" y="483" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0ltcqf8_di" bpmnElement="SubProcess_0ltcqf8" isExpanded="true">
+        <dc:Bounds x="604" y="336" width="373" height="197" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_15u3gtk_di" bpmnElement="SequenceFlow_15u3gtk">
+        <di:waypoint x="830" y="459" />
+        <di:waypoint x="882" y="459" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1vtz3p0_di" bpmnElement="SequenceFlow_1vtz3p0">
+        <di:waypoint x="661" y="459" />
+        <di:waypoint x="730" y="459" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0yl1onm_di" bpmnElement="UserTask_0yl1onm">
+        <dc:Bounds x="730" y="419" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_00ivipk_di" bpmnElement="EndEvent_0mdxch7">
+        <dc:Bounds x="882" y="441" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="885" y="484" width="32" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0p2j99n_di" bpmnElement="StartEvent_0lvcv48">
+        <dc:Bounds x="625" y="441" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="612" y="484" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1iq03q9_di" bpmnElement="Association_1iq03q9">
+        <di:waypoint x="211" y="473" />
+        <di:waypoint x="272" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0ahuh6g_di" bpmnElement="Association_0ahuh6g">
+        <di:waypoint x="208" y="442" />
+        <di:waypoint x="276" y="286" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0wckp0y_di" bpmnElement="Activity_1u21i56" isExpanded="true">
+        <dc:Bounds x="430" y="560" width="350" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_16pssnc_di" bpmnElement="Flow_16pssnc">
+        <di:waypoint x="506" y="660" />
+        <di:waypoint x="560" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mbaas9_di" bpmnElement="Flow_1mbaas9">
+        <di:waypoint x="660" y="660" />
+        <di:waypoint x="722" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_10amdhl_di" bpmnElement="Activity_1mrg5tl">
+        <dc:Bounds x="560" y="620" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hjnej3_di" bpmnElement="Event_0vhdmzq">
+        <dc:Bounds x="722" y="642" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_06t5uyk_di" bpmnElement="Event_1qe4r5o">
+        <dc:Bounds x="470" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="685" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

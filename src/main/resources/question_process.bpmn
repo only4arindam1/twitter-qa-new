@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1kk4qcm" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="ForumQA_Process" name="ForumQA_Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="questions_received">
+      <bpmn:outgoing>Flow_1nkwhrp</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0cde1cf" messageRef="Message_0dawu7k" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1nkwhrp" sourceRef="StartEvent_1" targetRef="Gateway_0aj3shz" />
+    <bpmn:sequenceFlow id="Flow_1e35nz6" sourceRef="Gateway_0aj3shz" targetRef="Event_066vlev" />
+    <bpmn:intermediateCatchEvent id="Event_066vlev" name="Cancel Request">
+      <bpmn:incoming>Flow_1e35nz6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nsk98m</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_00vk2cl" messageRef="Message_1coqddl" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:eventBasedGateway id="Gateway_0aj3shz">
+      <bpmn:incoming>Flow_1nkwhrp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1e35nz6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_00abf24</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="Event_0kbooni" name="CLLG Review">
+      <bpmn:incoming>Flow_00abf24</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xps7b2</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1haakor" messageRef="Message_0f06p52" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_00abf24" sourceRef="Gateway_0aj3shz" targetRef="Event_0kbooni" />
+    <bpmn:sequenceFlow id="Flow_1nsk98m" sourceRef="Event_066vlev" targetRef="Event_08mlr0q" />
+    <bpmn:endEvent id="Event_08mlr0q" name="Request Cancelled">
+      <bpmn:incoming>Flow_1nsk98m</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0d1khpl" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0xps7b2" sourceRef="Event_0kbooni" targetRef="Activity_1pav7b4" />
+    <bpmn:endEvent id="Event_1ss34pg">
+      <bpmn:incoming>Flow_0yq6xbr</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0yq6xbr" sourceRef="Activity_1pav7b4" targetRef="Event_1ss34pg" />
+    <bpmn:userTask id="Activity_1pav7b4" name="CLLG Review">
+      <bpmn:incoming>Flow_0xps7b2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yq6xbr</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_0dawu7k" name="request_recieved" />
+  <bpmn:message id="Message_0f06p52" name="cllg_review" />
+  <bpmn:message id="Message_1coqddl" name="cancel" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ForumQA_Process">
+      <bpmndi:BPMNEdge id="Flow_1nkwhrp_di" bpmnElement="Flow_1nkwhrp">
+        <di:waypoint x="215" y="100" />
+        <di:waypoint x="355" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e35nz6_di" bpmnElement="Flow_1e35nz6">
+        <di:waypoint x="405" y="100" />
+        <di:waypoint x="552" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00abf24_di" bpmnElement="Flow_00abf24">
+        <di:waypoint x="380" y="125" />
+        <di:waypoint x="380" y="210" />
+        <di:waypoint x="552" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nsk98m_di" bpmnElement="Flow_1nsk98m">
+        <di:waypoint x="588" y="100" />
+        <di:waypoint x="742" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xps7b2_di" bpmnElement="Flow_0xps7b2">
+        <di:waypoint x="588" y="210" />
+        <di:waypoint x="700" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yq6xbr_di" bpmnElement="Flow_0yq6xbr">
+        <di:waypoint x="800" y="210" />
+        <di:waypoint x="942" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1c43n7j_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="125" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1pk4khr_di" bpmnElement="Gateway_0aj3shz">
+        <dc:Bounds x="355" y="75" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0tiywv6_di" bpmnElement="Event_066vlev">
+        <dc:Bounds x="552" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="531" y="125" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0kbooni_di" bpmnElement="Event_0kbooni">
+        <dc:Bounds x="552" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="536" y="235" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0x9ihru_di" bpmnElement="Event_08mlr0q">
+        <dc:Bounds x="742" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="736" y="125" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ss34pg_di" bpmnElement="Event_1ss34pg">
+        <dc:Bounds x="942" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yq1ieb_di" bpmnElement="Activity_1pav7b4">
+        <dc:Bounds x="700" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

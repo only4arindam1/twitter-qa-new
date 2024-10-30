@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1u1ksvo" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <decision id="tweetApproval" name="Tweet Approval">
+    <decisionTable id="DecisionTable_0sbdhyu" hitPolicy="FIRST">
+      <input id="Input_1" label="Email" biodi:width="215">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>email</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0nr7fhn" label="Content">
+        <inputExpression id="LiteralExpression_0t9jc9a" typeRef="string">
+          <text>content</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="approval" name="approval" typeRef="boolean" />
+      <output id="OutputClause_050o9ao" label="comments" name="comments" typeRef="string" />
+      <rule id="DecisionRule_1y52clh">
+        <inputEntry id="UnaryTests_14qc5lf">
+          <text>"cannot.tweet@camunda.org"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_006wxhb">
+          <text>"can not tweet"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lcfab5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xsdqxo">
+          <text>"success"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0g41mjq">
+        <inputEntry id="UnaryTests_0enzlya">
+          <text>"abc"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1odgjfe">
+          <text>"hi"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06wd8cu">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t3g03i">
+          <text>"fail"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hn1c1d">
+        <inputEntry id="UnaryTests_138p98o">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05vkt1p">
+          <text>contains(content, "camunda rocks")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hggbaq">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ojpu5t">
+          <text>"fail"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01ozliv">
+        <inputEntry id="UnaryTests_1bdzljn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ynybjd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ld2atu">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03zubjg">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="tweetApproval">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
