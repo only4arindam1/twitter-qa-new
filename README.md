@@ -49,3 +49,6 @@ In IntelliJ, open the Settings dialog and select "Build, Execution, Deployment >
 Check the box to "Override" and browse to your `camunda-settings.xml`.  
 
 ![IntelliJ Maven User Settings](docs/intelliJ-maven-user-settings.png)
+
+
+##testing the git push
