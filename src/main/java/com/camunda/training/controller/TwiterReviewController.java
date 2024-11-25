@@ -39,8 +39,7 @@ public class TwiterReviewController {
     }
 
     @PostMapping("/process/create")
-    public  void startProcess(@RequestBody RequestContext reqContext){
-        RuntimeService runtimeService = processEngine.getRuntimeService();
+    public  void startProcess(@RequestBody RequestContext reqContext){ RuntimeService runtimeService = processEngine.getRuntimeService();
        RequestContext context = new RequestContext();
        context.setRequestId(reqContext.getRequestId());
        context.setWitnessId(reqContext.getWitnessId());

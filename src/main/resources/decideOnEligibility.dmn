@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1lja2g1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.4.0" camunda:diagramRelationId="ac49db8f-d827-44bc-b0d3-c7c35105e38b" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <decision id="decideOnEligibility" name="Decide Upgrade Eligibiltiy">
+    <informationRequirement id="InformationRequirement_10hvazz">
+      <requiredInput href="#userStatus" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0ubpo5a">
+      <requiredInput href="#InputData_1txhhok" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_159uxo7" hitPolicy="FIRST">
+      <input id="InputClause_1bnwsvl" label="User Status">
+        <inputExpression id="LiteralExpression_081uqdf" typeRef="string">
+          <text>userStatus</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0vy6xfo">
+          <text>"VIP","Regular"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0adc4dq" label="Engagement Score">
+        <inputExpression id="LiteralExpression_15gdlmw" typeRef="number">
+          <text>CalculateEngagementScore</text>
+        </inputExpression>
+      </input>
+      <input id="Input_1" label="Is User under 18">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>isunder18</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0nktm14" label="Student">
+        <inputExpression id="LiteralExpression_01f7vye" typeRef="boolean">
+          <text>isStudent</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Is Eligible for Upgrade" name="eligibleForUpgrade" typeRef="boolean" />
+      <output id="OutputClause_09suf2s" label="LCCLDay" name="lCCLDay" typeRef="string" />
+      <rule id="DecisionRule_0zglss8">
+        <inputEntry id="UnaryTests_0egfog0">
+          <text>"VIP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kr2l2z">
+          <text>&gt;= 25</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10aaazw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hcbm8g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1u0rlpd">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x9fau1">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0b2bzdh">
+        <inputEntry id="UnaryTests_1e9n3cs">
+          <text>"Regular"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v86nfq">
+          <text>&lt;= 40</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_077hm7f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dzlice">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1j4if3w">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xxpkfc">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12fjlpy">
+        <inputEntry id="UnaryTests_1cbrb1t">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g1canf">
+          <text>&gt;= 20</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mo4mz1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05zdqni">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jc0p85">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rw4b48">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00u4fbr">
+        <inputEntry id="UnaryTests_1rr48dd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ck4fzk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qjpgnd">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1otucf9">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rxnqop">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k6ynyn">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sf1hjh">
+        <inputEntry id="UnaryTests_1huw4sj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fpql5y">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xp5pr9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nbz77t">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_157lys4">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0k65ctv">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_0k64ifl" name="Decide if under18">
+    <variable id="InformationItem_085ulgc" name="isunder18" typeRef="boolean" />
+    <literalExpression id="LiteralExpression_1ggxmu2" expressionLanguage="feel">
+      <text>user_dob &gt;18</text>
+    </literalExpression>
+  </decision>
+  <inputData id="InputData_1txhhok" name="User Status1" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="decideOnEligibility">
+        <dc:Bounds height="80" width="180" x="250" y="180" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0f93vld" dmnElementRef="InformationRequirement_10hvazz">
+        <di:waypoint x="210" y="163" />
+        <di:waypoint x="375" y="240" />
+        <di:waypoint x="375" y="260" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0a4tudh" dmnElementRef="Decision_0k64ifl">
+        <dc:Bounds height="80" width="180" x="620" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1pnh4bj" dmnElementRef="InputData_1txhhok">
+        <dc:Bounds height="45" width="125" x="158" y="78" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1qxpgid" dmnElementRef="InformationRequirement_0ubpo5a">
+        <di:waypoint x="221" y="123" />
+        <di:waypoint x="340" y="160" />
+        <di:waypoint x="340" y="180" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

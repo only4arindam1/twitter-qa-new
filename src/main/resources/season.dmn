@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_0tgpju9" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <decision id="Decision_1uodk4w" name="Dish">
+    <informationRequirement id="InformationRequirement_11mahfl">
+      <requiredInput href="#InputData_0ubqklr" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0zyihhp">
+      <requiredInput href="#InputData_0cf1nre" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0gsz0la">
+      <input id="Input_1">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>season</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1qfu2m8">
+          <text>"winter","summer","spring"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_06v0ykt" label="vegetarian">
+        <inputExpression id="LiteralExpression_0qx0llm" typeRef="boolean">
+          <text>vegetarian</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" name="dish" typeRef="string" />
+      <rule id="DecisionRule_1l8h4pp">
+        <inputEntry id="UnaryTests_0t6147v">
+          <text>"winter"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lu1vdo">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1sz18ny">
+          <text>"turkey"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ma34qm">
+        <inputEntry id="UnaryTests_08oo8up">
+          <text>"spring"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1glqb4z">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mkt85h">
+          <text>"chicken"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uqv714">
+        <inputEntry id="UnaryTests_0gan26i">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q84o5o">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0oqulpj">
+          <text>"pasta"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0ubqklr" name="Season" />
+  <inputData id="InputData_0cf1nre" name="Veg Options" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1uodk4w">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1g2l7fy" dmnElementRef="InputData_0ubqklr">
+        <dc:Bounds height="45" width="125" x="98" y="298" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0cgg88n" dmnElementRef="InputData_0cf1nre">
+        <dc:Bounds height="45" width="125" x="328" y="288" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1qfmyvz" dmnElementRef="InformationRequirement_11mahfl">
+        <di:waypoint x="161" y="298" />
+        <di:waypoint x="220" y="200" />
+        <di:waypoint x="220" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0wq62nu" dmnElementRef="InformationRequirement_0zyihhp">
+        <di:waypoint x="391" y="288" />
+        <di:waypoint x="280" y="200" />
+        <di:waypoint x="280" y="180" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
